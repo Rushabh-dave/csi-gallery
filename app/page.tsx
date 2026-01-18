@@ -1,65 +1,307 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useEffect, useMemo, useState } from "react";
+
+import "../styles/gallery.css";
+
+type ImageItem = {
+  src: string;
+  title: string;
+  date: string;
+  link?: string;
+};
+
+type YearData = Record<string, ImageItem[]>;
+
+const YEAR_DATA: YearData = {
+  "2025-2026": [
+    { src: "/images/1.jpg", title: "CodeShastra", date: "2025-07-14", link: "https://share.google/jsE1mw0x5aNlI9J9K" },
+    { src: "/images/2.jpg", title: "Wild Nature", date: "2025-08-02", link: "https://example.com/2025-26/wild-nature" },
+    { src: "/images/2.jpg", title: "City Mood", date: "2025-09-11", link: "https://example.com/2025-26/city-mood" },
+    { src: "/images/1.jpg", title: "Ocean Breeze", date: "2025-10-05", link: "https://example.com/2025-26/ocean-breeze" },
+    { src: "/images/2.jpg", title: "Sunset Glow", date: "2025-11-20", link: "https://example.com/2025-26/sunset-glow" },
+    { src: "/images/1.jpg", title: "Green Escape", date: "2025-12-01", link: "https://example.com/2025-26/green-escape" },
+  ],
+
+  "2024-2025": [
+    { src: "https://picsum.photos/id/1074/1400/2000", title: "Golden Hour", date: "2024-06-18", link: "https://example.com/2024-25/golden-hour" },
+    { src: "https://picsum.photos/id/1084/1400/2000", title: "Blue Mountains", date: "2024-07-10", link: "https://example.com/2024-25/blue-mountains" },
+    { src: "https://picsum.photos/id/109/1400/2000", title: "Street Scene", date: "2024-08-01", link: "https://example.com/2024-25/street-scene" },
+    { src: "https://picsum.photos/id/110/1400/2000", title: "Calm Lake", date: "2024-09-12", link: "https://example.com/2024-25/calm-lake" },
+    { src: "https://picsum.photos/id/111/1400/2000", title: "Forest Walk", date: "2024-10-08", link: "https://example.com/2024-25/forest-walk" },
+    { src: "https://picsum.photos/id/112/1400/2000", title: "Skyline", date: "2024-11-15", link: "https://example.com/2024-25/skyline" },
+  ],
+
+  "2023-2024": [
+    { src: "https://picsum.photos/id/120/1400/2000", title: "Scene 1", date: "2023-06-01", link: "https://example.com/2023-24/scene-1" },
+    { src: "https://picsum.photos/id/121/1400/2000", title: "Scene 2", date: "2023-06-18", link: "https://example.com/2023-24/scene-2" },
+    { src: "https://picsum.photos/id/122/1400/2000", title: "Scene 3", date: "2023-07-04", link: "https://example.com/2023-24/scene-3" },
+    { src: "https://picsum.photos/id/123/1400/2000", title: "Scene 4", date: "2023-08-10", link: "https://example.com/2023-24/scene-4" },
+    { src: "https://picsum.photos/id/124/1400/2000", title: "Scene 5", date: "2023-09-22", link: "https://example.com/2023-24/scene-5" },
+    { src: "https://picsum.photos/id/125/1400/2000", title: "Scene 6", date: "2023-11-05", link: "https://example.com/2023-24/scene-6" },
+  ],
+
+  "2022-2023": [
+    { src: "https://picsum.photos/id/130/1400/2000", title: "Set A", date: "2022-05-14", link: "https://example.com/2022-23/set-a" },
+    { src: "https://picsum.photos/id/131/1400/2000", title: "Set B", date: "2022-06-09", link: "https://example.com/2022-23/set-b" },
+    { src: "https://picsum.photos/id/132/1400/2000", title: "Set C", date: "2022-07-21", link: "https://example.com/2022-23/set-c" },
+    { src: "https://picsum.photos/id/133/1400/2000", title: "Set D", date: "2022-08-03", link: "https://example.com/2022-23/set-d" },
+    { src: "https://picsum.photos/id/134/1400/2000", title: "Set E", date: "2022-10-15", link: "https://example.com/2022-23/set-e" },
+    { src: "https://picsum.photos/id/135/1400/2000", title: "Set F", date: "2022-12-02", link: "https://example.com/2022-23/set-f" },
+  ],
+
+  "2021-2022": [
+    { src: "https://picsum.photos/id/140/1400/2000", title: "Year 21", date: "2021-04-12", link: "https://example.com/2021-22/year-21-1" },
+    { src: "https://picsum.photos/id/141/1400/2000", title: "Year 21", date: "2021-05-08", link: "https://example.com/2021-22/year-21-2" },
+    { src: "https://picsum.photos/id/142/1400/2000", title: "Year 21", date: "2021-06-19", link: "https://example.com/2021-22/year-21-3" },
+    { src: "https://picsum.photos/id/143/1400/2000", title: "Year 21", date: "2021-07-25", link: "https://example.com/2021-22/year-21-4" },
+    { src: "https://picsum.photos/id/144/1400/2000", title: "Year 21", date: "2021-09-02", link: "https://example.com/2021-22/year-21-5" },
+    { src: "https://picsum.photos/id/145/1400/2000", title: "Year 21", date: "2021-10-17", link: "https://example.com/2021-22/year-21-6" },
+  ],
+
+ 
+  "2020-2021": [
+    { src: "https://picsum.photos/id/150/1400/2000", title: "Year 20", date: "2020-04-12", link: "https://example.com/2020-21/year-20-1" },
+    { src: "https://picsum.photos/id/151/1400/2000", title: "Year 20", date: "2020-05-08", link: "https://example.com/2020-21/year-20-2" },
+    { src: "https://picsum.photos/id/152/1400/2000", title: "Year 20", date: "2020-06-19", link: "https://example.com/2020-21/year-20-3" },
+    { src: "https://picsum.photos/id/153/1400/2000", title: "Year 20", date: "2020-07-25", link: "https://example.com/2020-21/year-20-4" },
+    { src: "https://picsum.photos/id/154/1400/2000", title: "Year 20", date: "2020-09-02", link: "https://example.com/2020-21/year-20-5" },
+    { src: "https://picsum.photos/id/155/1400/2000", title: "Year 20", date: "2020-10-17", link: "https://example.com/2020-21/year-20-6" },
+  ],
+
+  "2019-2020": [
+    { src: "https://picsum.photos/id/160/1400/2000", title: "Year 19", date: "2019-04-12", link: "https://example.com/2019-20/year-19-1" },
+    { src: "https://picsum.photos/id/161/1400/2000", title: "Year 19", date: "2019-05-08", link: "https://example.com/2019-20/year-19-2" },
+    { src: "https://picsum.photos/id/162/1400/2000", title: "Year 19", date: "2019-06-19", link: "https://example.com/2019-20/year-19-3" },
+    { src: "https://picsum.photos/id/163/1400/2000", title: "Year 19", date: "2019-07-25", link: "https://example.com/2019-20/year-19-4" },
+    { src: "https://picsum.photos/id/164/1400/2000", title: "Year 19", date: "2019-09-02", link: "https://example.com/2019-20/year-19-5" },
+    { src: "https://picsum.photos/id/165/1400/2000", title: "Year 19", date: "2019-10-17", link: "https://example.com/2019-20/year-19-6" },
+  ],
+};
+
+export default function Page() {
+  // ✅ dropdown order: latest first, and stable
+  const years = useMemo(() => Object.keys(YEAR_DATA), []);
+  const [activeYear, setActiveYear] = useState<string>(years[0]);
+  const images = YEAR_DATA[activeYear];
+
+  const [paused, setPaused] = useState<boolean>(false);
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+
+  const [switching, setSwitching] = useState<boolean>(false);
+
+  const active = images?.[activeIndex];
+
+  const openLightbox = (index: number) => {
+    setActiveIndex(index);
+    setOpen(true);
+  };
+  const closeLightbox = () => setOpen(false);
+
+  const prev = () => setActiveIndex((i) => (i - 1 + images.length) % images.length);
+  const next = () => setActiveIndex((i) => (i + 1) % images.length);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, images.length]);
+
+  useEffect(() => {
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [open]);
+
+  const onYearChange = (y: string) => {
+    if (y === activeYear) return;
+    setPaused(true);
+    setSwitching(true);
+
+    window.setTimeout(() => {
+      setActiveYear(y);
+      setActiveIndex(0);
+      setSwitching(false);
+      setPaused(false);
+    }, 280);
+  };
+
+  const downloadName =
+    active?.title ? active.title.replace(/\s+/g, "-").toLowerCase() + ".jpg" : `image-${activeIndex + 1}.jpg`;
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="page">
+      <div className="topNav">
+        <div className="navInner">
+          <div className="brand">Gallery</div>
+
+          <div className="yearSelectWrap">
+            <label className="yearLabel" htmlFor="yearSelect">
+              Year
+            </label>
+            <select
+              id="yearSelect"
+              className="yearSelect"
+              value={activeYear}
+              onChange={(e) => onYearChange(e.target.value)}
+              aria-label="Select year"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              {years.map((y) => (
+                <option key={y} value={y}>
+                  {y}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+
+      <div className="centerStage">
+        <div
+          className={`carousel ${paused ? "paused" : ""} ${switching ? "switching" : ""}`}
+          style={{ ["--ringY" as any]: "clamp(40px, 18vw, 350px)" }}
+        >
+          <div className="carousel-rotation-direction">
+            <ul className="carousel-item-wrapper" style={{ ["--_num-elements" as any]: images.length }}>
+              {images.map((img, i) => (
+                <li
+                  key={img.src + i}
+                  className="carousel-item"
+                  style={{ ["--_index" as any]: i + 1 }}
+                  onMouseEnter={() => setPaused(true)}
+                  onMouseLeave={() => setPaused(false)}
+                  onClick={() => openLightbox(i)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") openLightbox(i);
+                  }}
+                >
+                  <div className="flip">
+                    <div className="face front">
+                      <img src={img.src} alt={img.title || `Image ${i + 1}`} />
+                    </div>
+
+                    <div className="face back">
+                      <img className="backImg" src={img.src} alt="" aria-hidden="true" />
+                      <div className="backOverlay">
+                        <div className="dateTag">{img.date}</div>
+                        <h3>{img.title}</h3>
+                        <div className="hint">Click to open</div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              ))}
+
+              <li className="carousel-ground" />
+            </ul>
+          </div>
         </div>
-      </main>
+      </div>
+
+      {open && active && (
+        <div
+          className="lightboxOverlay"
+          onClick={closeLightbox}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Image lightbox"
+        >
+          <div className="lightbox" onClick={(e) => e.stopPropagation()}>
+            <img className="lightboxImg" src={active.src} alt={active.title} />
+
+            <button className="navBtn left" onClick={prev} type="button" aria-label="Previous">
+              <ChevronLeft />
+            </button>
+            <button className="navBtn right" onClick={next} type="button" aria-label="Next">
+              <ChevronRight />
+            </button>
+
+            <div className="lightboxTopLeft" onClick={(e) => e.stopPropagation()}>
+              <div className="lightboxDate" aria-label="Image date">
+                {active.date}
+              </div>
+            </div>
+
+            <div className="lightboxTopRight" onClick={(e) => e.stopPropagation()}>
+              <a
+                className="iconBtn"
+                href={active.src}
+                download={downloadName}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Download image"
+                title="Download"
+              >
+                <DownloadIcon />
+              </a>
+
+              <button
+                className="iconBtn"
+                onClick={closeLightbox}
+                type="button"
+                aria-label="Close lightbox"
+                title="Close"
+              >
+                <CloseIcon />
+              </button>
+            </div>
+
+            <div className="lightboxCaption">
+              <h3>{active.title}</h3>
+
+              {active.link && (
+                <a className="readMoreBtn" href={active.link} target="_blank" rel="noreferrer">
+                  Read more
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
+  );
+}
+
+function DownloadIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 3v10" />
+      <path d="M7 11l5 5 5-5" />
+      <path d="M5 21h14" />
+    </svg>
+  );
+}
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M18 6L6 18" />
+      <path d="M6 6l12 12" />
+    </svg>
+  );
+}
+function ChevronLeft() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M15 18l-6-6 6-6" />
+    </svg>
+  );
+}
+function ChevronRight() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 6l6 6-6 6" />
+    </svg>
   );
 }
