@@ -80,7 +80,7 @@ const YEAR_DATA: YearData = {
 };
 
 export default function Page() {
-  // ✅ dropdown order: latest first, and stable
+ 
   const years = useMemo(() => Object.keys(YEAR_DATA), []);
   const [activeYear, setActiveYear] = useState<string>(years[0]);
   const images = YEAR_DATA[activeYear];
