@@ -15,21 +15,27 @@ type YearData = Record<string, ImageItem[]>;
 
 const YEAR_DATA: YearData = {
   "2025-2026": [
-    { src: "/images/1.jpg", title: "CodeShastra", date: "2025-07-14", link: "https://share.google/jsE1mw0x5aNlI9J9K" },
-    { src: "/images/2.jpg", title: "Wild Nature", date: "2025-08-02", link: "https://example.com/2025-26/wild-nature" },
-    { src: "/images/2.jpg", title: "City Mood", date: "2025-09-11", link: "https://example.com/2025-26/city-mood" },
-    { src: "/images/1.jpg", title: "Ocean Breeze", date: "2025-10-05", link: "https://example.com/2025-26/ocean-breeze" },
-    { src: "/images/2.jpg", title: "Sunset Glow", date: "2025-11-20", link: "https://example.com/2025-26/sunset-glow" },
-    { src: "/images/1.jpg", title: "Green Escape", date: "2025-12-01", link: "https://example.com/2025-26/green-escape" },
+    { src: "/images/2025/1.jpg", title: "Trajectory Talks", date: "10-10-2-25", link: "https://share.google/jsE1mw0x5aNlI9J9K" },
+    { src: "/images/2025/2.jpg", title: "UI/UX Seminar", date: "17-10-2025", link: "https://example.com/2025-26/wild-nature" },
+    { src: "/images/2025/3.jpg", title: "The Weekend", date: "31-10-2025", link: "https://example.com/2025-26/city-mood" },
+   // { src: "/images/2025/4.jpg", title: "Transylvanian Escape", date: "31-10-2025", link: "https://example.com/2025-26/ocean-breeze" },
+    { src: "/images/2025/5.jpg", title: "Transylvanian Escape", date: "31-10-2025", link: "https://example.com/2025-26/sunset-glow" },
+    { src: "/images/2025/7.jpg", title: "Pixel Paranoia", date: "01-11-2025", link: "https://example.com/2025-26/green-escape" },
   ],
 
   "2024-2025": [
-    { src: "https://picsum.photos/id/1074/1400/2000", title: "Golden Hour", date: "2024-06-18", link: "https://example.com/2024-25/golden-hour" },
-    { src: "https://picsum.photos/id/1084/1400/2000", title: "Blue Mountains", date: "2024-07-10", link: "https://example.com/2024-25/blue-mountains" },
-    { src: "https://picsum.photos/id/109/1400/2000", title: "Street Scene", date: "2024-08-01", link: "https://example.com/2024-25/street-scene" },
-    { src: "https://picsum.photos/id/110/1400/2000", title: "Calm Lake", date: "2024-09-12", link: "https://example.com/2024-25/calm-lake" },
-    { src: "https://picsum.photos/id/111/1400/2000", title: "Forest Walk", date: "2024-10-08", link: "https://example.com/2024-25/forest-walk" },
-    { src: "https://picsum.photos/id/112/1400/2000", title: "Skyline", date: "2024-11-15", link: "https://example.com/2024-25/skyline" },
+    { src: "/images/2024/codesashtra.jpg", title: "Codeshastra", date: "05-04-2024", link: "https://example.com/2024-25/golden-hour" },
+    { src: "/images/2024/codesashtra2.jpg", title: "Codeshastra", date: "06-04-2024", link: "https://example.com/2024-25/blue-mountains" },
+    { src: "/images/2024/codesashtra3.jpg", title: "Codeshastra", date: "06-04-2024", link: "https://example.com/2024-25/street-scene" },
+    { src: "/images/2024/midweek.jpg", title: "Midweek Ventures", date: "22-10-2024", link: "https://example.com/2024-25/calm-lake" },
+    { src: "/images/2024/midweek2.jpg", title: "Midweek Ventures", date: "22-10-2024", link: "https://example.com/2024-25/forest-walk" },
+    { src: "/images/2024/midweek3.jpg", title: "Midweek Ventures", date: "23-10-2024", link: "https://example.com/2024-25/skyline" },
+    { src: "/images/2024/pixel.jpg", title: "Pxel Paranoia", date: "23-10-2024", link: "https://example.com/2024-25/skyline" },
+    { src: "/images/2024/trajectory.jpg", title: "Trajectory Talks", date: "01-10-2024", link: "https://example.com/2024-25/skyline" },
+    { src: "/images/2024/sansmaran.jpg", title: "Sansmaran", date: " ", link: "https://example.com/2024-25/skyline" },
+    //{ src: "/images/2024/1.jpg", title: "Core-Codeshastra", date: "06-04-2024", link: "https://share.google/jsE1mw0x5aNlI9J9K" },
+    //{ src: "/images/2024/3.jpg", title: "Committee-Codeshastra", date: "06-04-2024", link: "https://share.google/jsE1mw0x5aNlI9J9K" },
+    
   ],
 
   "2023-2024": [
